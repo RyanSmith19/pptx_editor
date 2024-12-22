@@ -56,7 +56,7 @@ If no arguments are provided, the script will prompt the user for required input
     Is the input a directory? (y/n): y
     Enter the font size for all text (or press Enter to skip): 24
     Enter the font size for title text (or press Enter to skip): 32
-    Should all text be bold? (y/n): n
+    Should all text be bold? (y/n): n```
 
 
 ## Requirements
