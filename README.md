@@ -51,12 +51,14 @@ Run the script with the following options:
 ##### Interactive Mode
 If no arguments are provided, the script will prompt the user for required inputs interactively:
 
-```Enter the input file or directory path: /path/to/input
+```
+    Enter the input file or directory path: /path/to/input
     Enter the output file or directory path: /path/to/output
     Is the input a directory? (y/n): y
     Enter the font size for all text (or press Enter to skip): 24
     Enter the font size for title text (or press Enter to skip): 32
-    Should all text be bold? (y/n): n ```
+    Should all text be bold? (y/n): n
+    ```
 
 
 ## Requirements
