@@ -1,5 +1,6 @@
 import argparse
 import os
+import sys
 from pptx import Presentation
 from pptx.util import Pt
 
@@ -64,26 +65,16 @@ def process_presentation(file_path, output_path, font_size=None, title_font_size
         for shape in slide.shapes:
             if shape.has_text_frame:
                 for paragraph in shape.text_frame.paragraphs:
-                    # Process runs line by line within the paragraph
-                    lines = paragraph.text.splitlines()  # Split paragraph into individual lines
-                    first_line_processed = False
-
                     for run in paragraph.runs:
-                        line = run.text
-
-                        # Check if it's the first line of the first slide
-                        if idx == 0 and not first_line_processed and line.strip():
-                            if title_font_size:
-                                run.font.size = Pt(title_font_size)
-                            if bold is not None:
-                                run.font.bold = bold
-                            first_line_processed = True
-                        else:
-                            # Apply general font size and boldness to other lines
-                            if font_size:
-                                run.font.size = Pt(font_size)
-                            if bold is not None:
-                                run.font.bold = bold
+                        # Handle the first line of the first slide for title font size
+                        if idx == 0 and title_font_size and paragraph == shape.text_frame.paragraphs[0]:
+                            run.font.size = Pt(title_font_size)
+                        
+                        # Apply general font size and boldness to all text
+                        if font_size:
+                            run.font.size = Pt(font_size)
+                        if bold is not None:
+                            run.font.bold = bold
 
     # Save the updated presentation
     prs.save(output_path)
