@@ -64,21 +64,26 @@ def process_presentation(file_path, output_path, font_size=None, title_font_size
         for shape in slide.shapes:
             if shape.has_text_frame:
                 for paragraph in shape.text_frame.paragraphs:
-                    for run in paragraph.runs:
-                        if font_size:
-                            run.font.size = Pt(font_size)
-                        if bold is not None:
-                            run.font.bold = bold
+                    # Process runs line by line within the paragraph
+                    lines = paragraph.text.splitlines()  # Split paragraph into individual lines
+                    first_line_processed = False
 
-        # Handle title on the first slide
-        if idx == 0 and title_font_size:
-            for shape in slide.shapes:
-                if shape.has_text_frame and shape.text_frame.text:
-                    first_paragraph = shape.text_frame.paragraphs[0]
-                    if first_paragraph.runs and first_paragraph.runs[0].font.underline:
-                        for run in first_paragraph.runs:
-                            run.font.size = Pt(title_font_size)
-                        break
+                    for run in paragraph.runs:
+                        line = run.text
+
+                        # Check if it's the first line of the first slide
+                        if idx == 0 and not first_line_processed and line.strip():
+                            if title_font_size:
+                                run.font.size = Pt(title_font_size)
+                            if bold is not None:
+                                run.font.bold = bold
+                            first_line_processed = True
+                        else:
+                            # Apply general font size and boldness to other lines
+                            if font_size:
+                                run.font.size = Pt(font_size)
+                            if bold is not None:
+                                run.font.bold = bold
 
     # Save the updated presentation
     prs.save(output_path)
@@ -90,12 +95,15 @@ def process_directory(input_dir, output_dir, font_size=None, title_font_size=Non
         os.makedirs(output_dir)
 
     for file_name in os.listdir(input_dir):
-        if file_name.endswith(".pptx"):
+        if file_name.endswith(".pptx") and not file_name.startswith("~$"):
             input_path = os.path.join(input_dir, file_name)
             output_path = os.path.join(output_dir, file_name)
-            process_presentation(input_path, output_path, font_size, title_font_size, bold)
+            try:
+                process_presentation(input_path, output_path, font_size, title_font_size, bold)
+            except Exception as e:
+                print(f"Error processing file {file_name}: {e}")
         else: 
-            print("Skipping non-PPTX files: {}".format(file_name))
+            print("Skipping file: {}".format(file_name))
 
 def main():
     args = parse_arguments()
