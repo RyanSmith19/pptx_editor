@@ -69,9 +69,7 @@ Install them using:
 
 Alternatively, use the provided shell script:
 
-    ```
     ./install_requirements.sh
-    ```
 
 ## Testing
 
