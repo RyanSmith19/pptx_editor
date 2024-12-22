@@ -78,5 +78,5 @@ Alternatively, use the provided shell script:
 The output directory will be created if it does not exist.
 The script identifies the title text as the first line of the first slide with underlined formatting.
 
-Author
+## Author
 Developed by Ryan Smith.

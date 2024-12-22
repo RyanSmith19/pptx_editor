@@ -82,7 +82,7 @@ def process_presentation(file_path, output_path, font_size=None, title_font_size
 
     # Save the updated presentation
     prs.save(output_path)
-    print(f"Success: {os.path.basename(file_path)} processed and saved to {output_path}")
+    print("Success: {} processed and saved to {}".format(os.path.basename(file_path), output_path))
 
 def process_directory(input_dir, output_dir, font_size=None, title_font_size=None, bold=None):
     """Process all PowerPoint files in a directory."""
@@ -95,7 +95,7 @@ def process_directory(input_dir, output_dir, font_size=None, title_font_size=Non
             output_path = os.path.join(output_dir, file_name)
             process_presentation(input_path, output_path, font_size, title_font_size, bold)
         else: 
-            print(f"Skipping non-PPTX files: {file_name}")
+            print("Skipping non-PPTX files: {}".format(file_name))
 
 def main():
     args = parse_arguments()
@@ -107,4 +107,8 @@ def main():
         process_directory(args.input, args.output, args.font_size, args.title_font_size, args.bold)
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nProgram interrupted. Exiting...")
+        sys.exit(0)
